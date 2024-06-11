@@ -13,7 +13,11 @@ def test_zabbix_package(host):
     version = ansible_data['zabbix_web_version']
     webserver = ansible_data['zabbix_web_http_server']
 
-    zabbix_web = host.package(f'zabbix-%s-conf' % webserver)
+    package_name = f'zabbix-{webserver}-conf'
+    if version == 7.0:
+        package_name = f'zabbix-{webserver}-conf-php8'
+    
+    zabbix_web = host.package(package_name)
     assert str(version) in zabbix_web.version
 
 
@@ -22,7 +26,7 @@ def test_zabbix_web(host):
     ansible_variables = host.ansible.get_variables()
     zabbix_websrv = str(ansible_variables["zabbix_web_http_server"])
 
-    if host.system_info.distribution in ["debian", "ubuntu"]:
+    if host.system_info.distribution in ["debian", "ubuntu", "opensuse-leap"]:
         assert zabbix_web.user == "www-data"
         assert zabbix_web.group == "www-data"
     elif host.system_info.distribution == "centos":

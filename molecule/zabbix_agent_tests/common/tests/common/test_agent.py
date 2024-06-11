@@ -10,9 +10,9 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_zabbixagent_running_and_enabled(host, zabbix_agent_service):
     # Find out why this is not working for linuxmint and opensuse
-    if host.system_info.distribution not in ["linuxmint", "opensuse", "ubuntu"]:
-        assert zabbix_agent_service.is_running
-        assert zabbix_agent_service.is_enabled
+    # if host.system_info.distribution not in ["linuxmint","ubuntu"]:
+    assert zabbix_agent_service.is_running
+    assert zabbix_agent_service.is_enabled
 
 
 def test_zabbix_agent_dot_conf(zabbix_agent_conf):
@@ -33,8 +33,8 @@ def test_zabbix_include_dir(zabbix_agent_include_dir):
 
 def test_socket(host):
     # Find out why this is not working for linuxmint and opensus
-    if host.system_info.distribution not in ["linuxmint", "opensuse"]:
-        assert host.socket("tcp://0.0.0.0:10050").is_listening
+    #if host.system_info.distribution not in ["linuxmint", "opensuse"]:
+    assert host.socket("tcp://0.0.0.0:10050").is_listening
 
 
 # def test_zabbix_package(host, zabbix_agent_package):
